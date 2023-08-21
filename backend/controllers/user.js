@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Post = require("../models/Post");
 
 exports.register = async (req, res) => {
   try {
@@ -180,7 +181,7 @@ exports.updatePassword = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Password updated",
+      message: "Password updated successfully",
     });
   } catch (error) {
     res.status(500).json({
@@ -214,7 +215,55 @@ exports.updateProfile = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Profile updated",
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const { posts, following, followers } = user;
+
+    // Deleting all posts of user
+    for (let i = 0; i < posts.length; i++) {
+      const post = await Post.findById(posts[i]);
+      await post.deleteOne();
+    }
+
+    // Deleting user from follower's following
+    for (let i = 0; i < followers.length; i++) {
+      const follower = await User.findById(followers[i]);
+      const index = follower.following.indexOf(req.user._id);
+      follower.following.splice(index, 1);
+      await follower.save();
+    }
+
+    // Deleting user from following's followers
+    for (let i = 0; i < following.length; i++) {
+      const userFollowing = await User.findById(following[i]);
+      const index = userFollowing.followers.indexOf(req.user._id);
+      userFollowing.followers.splice(index, 1);
+      await userFollowing.save();
+    }
+
+    // Deleting profile
+    await user.deleteOne();
+
+    //Logout user
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Profile deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
