@@ -4,6 +4,7 @@ const {
   likeandUnlikePost,
   deletePost,
   getPostOfFollowing,
+  updateCaption,
 } = require("../controllers/post");
 const { isAuthenticated } = require("../middlewares/auth");
 
@@ -13,6 +14,7 @@ router.route("/post/upload").post(isAuthenticated, createPost);
 router
   .route("/post/:id")
   .post(isAuthenticated, likeandUnlikePost)
+  .put(isAuthenticated, updateCaption)
   .delete(isAuthenticated, deletePost);
 
 router.route("/posts").get(isAuthenticated, getPostOfFollowing);
