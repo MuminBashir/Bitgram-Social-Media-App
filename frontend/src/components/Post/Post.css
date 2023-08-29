@@ -1,0 +1,47 @@
+.post{
+    width: 60%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 0 1vmax 2vmax;
+    margin: 2vmax;
+}
+
+.postHeader{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1vmax;
+}
+
+.postHeader > button {
+    border-radius: 100%;
+    color: rgba(0, 0, 0, 0.582);
+
+}
+
+.post > img{
+    width: 100%;
+}
+
+.postDetails{
+    display: flex;
+    padding: 1vmax;
+}
+
+.postDetails > a{
+    text-decoration: none;
+    color: black;
+    margin: 1vmax;
+}
+
+.postFooter > button{
+    color: rgba(0, 0, 0, 0.767);
+    margin: 0 1vmax;
+    border-radius: 100%;
+    transition: all 0.3s;
+}
+
+.postFooter > button:hover{
+    transform: translateY(-3px);
+}
