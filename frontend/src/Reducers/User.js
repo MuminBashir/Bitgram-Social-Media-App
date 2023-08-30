@@ -60,7 +60,7 @@ export const postOfFollowingReducer = createReducer(
       state.loading = false;
       state.posts = action.payload;
     },
-    postOfFollowingFailuret: (state, action) => {
+    postOfFollowingFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -80,7 +80,7 @@ export const allUsersReducer = createReducer(
       state.loading = false;
       state.users = action.payload;
     },
-    allUsersFailuret: (state, action) => {
+    allUsersFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

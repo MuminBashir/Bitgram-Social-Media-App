@@ -23,7 +23,7 @@ router
 router.route("/posts").get(isAuthenticated, getPostOfFollowing);
 router
   .route("/post/comment/:id")
-  .get(isAuthenticated, addComment)
+  .post(isAuthenticated, addComment)
   .delete(isAuthenticated, deleteComment)
   .put(isAuthenticated, updateComment);
 

@@ -4,9 +4,11 @@ import { Post, User, Loading } from "../";
 import "./Home.css";
 import { getAllUsers, getPostOfFollowing } from "../../Actions/User";
 import { Typography } from "@mui/material";
+import { useAlert } from "react-alert";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const alert = useAlert();
 
   const { loading, posts, error } = useSelector(
     (state) => state.postOfFollowing
@@ -16,10 +18,27 @@ const Home = () => {
     (state) => state.allUsers
   );
 
+  const { message, error: likeError } = useSelector((state) => state.like);
+
   useEffect(() => {
     dispatch(getPostOfFollowing());
     dispatch(getAllUsers());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch({ type: "clearErrors" });
+    }
+    if (likeError) {
+      alert.error(likeError);
+      dispatch({ type: "clearErrors" });
+    }
+    if (message) {
+      alert.success(message);
+      dispatch({ type: "clearMessage" });
+    }
+  }, [dispatch, alert, error, likeError, message]);
 
   return (
     <div className="home">
@@ -41,7 +60,7 @@ const Home = () => {
             />
           ))
         ) : (
-          <Typography variant="h6">No posts yet</Typography>
+          <Typography variant="h6">No Posts Yet</Typography>
         )}
       </div>
       <div className="homeright">
@@ -57,7 +76,7 @@ const Home = () => {
             />
           ))
         ) : (
-          <Typography>No users yet</Typography>
+          <Typography>No Users Yet</Typography>
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-.post{
+.post {
     width: 60%;
     background-color: white;
     border-radius: 5px;
@@ -7,41 +7,69 @@
     margin: 2vmax;
 }
 
-.postHeader{
+.postHeader {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     padding: 1vmax;
 }
 
-.postHeader > button {
+.postHeader>button {
     border-radius: 100%;
     color: rgba(0, 0, 0, 0.582);
 
 }
 
-.post > img{
+.post>img {
     width: 100%;
 }
 
-.postDetails{
+.postDetails {
     display: flex;
     padding: 1vmax;
 }
 
-.postDetails > a{
+.postDetails>a {
     text-decoration: none;
     color: black;
     margin: 1vmax;
 }
 
-.postFooter > button{
+.postFooter>button {
     color: rgba(0, 0, 0, 0.767);
     margin: 0 1vmax;
     border-radius: 100%;
     transition: all 0.3s;
 }
 
-.postFooter > button:hover{
+.postFooter>button:hover {
     transform: translateY(-3px);
+}
+
+.postFooter>button>svg {
+    font-size: 1.7vmax;
+}
+
+.DialogBox {
+    min-width: 500px;
+    height: 100vh;
+    padding: 2vmax;
+}
+
+.commentForm {
+    display: flex;
+    margin: 1vmax;
+}
+
+.commentForm>input {
+    width: 100%;
+    padding: 1vmax 2vmax;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.288);
+    border-radius: 30px 0 0 30px;
+    font: 100 1vmax "Roboto", sans-serif;
+}
+
+.commentForm>button {
+    border-radius: 0%;
 }

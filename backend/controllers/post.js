@@ -117,7 +117,7 @@ exports.likeandUnlikePost = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        messagae: "Post Unliked",
+        message: "Post Unliked",
       });
     } else {
       post.likes.push(req.user._id);
@@ -125,7 +125,7 @@ exports.likeandUnlikePost = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        messagae: "Post liked",
+        message: "Post liked",
       });
     }
   } catch (error) {
