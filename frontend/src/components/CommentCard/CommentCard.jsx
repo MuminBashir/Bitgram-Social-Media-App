@@ -55,13 +55,13 @@ const CommentCard = ({
           <Button onClick={handleDeleteComment}>
             <Delete />
           </Button>
-          <Button onClick={handleEditComment}>
+          <Button onClick={() => setEditToggle(!editToggle)}>
             <Edit />
           </Button>
         </>
       ) : userId === user._id ? (
         <>
-          <Button onClick={() => setEditToggle(!editToggle)}>
+          <Button onClick={handleDeleteComment}>
             <Delete />
           </Button>
           <Button onClick={() => setEditToggle(!editToggle)}>

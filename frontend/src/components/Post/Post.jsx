@@ -157,7 +157,7 @@ const Post = ({
           </form>
 
           {comments && comments.length > 0 ? (
-            comments.map((comment) => (
+            comments.toReversed().map((comment) => (
               <CommentCard
                 key={comment._id}
                 userId={comment.user._id}
