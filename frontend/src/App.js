@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
-import { Header, Home, Login } from "./components";
+import { Account, Header, Home, Login } from "./components";
 import { loadUser } from "./Actions/User";
 
 function App() {
@@ -19,6 +19,10 @@ function App() {
       {isAuthenticated && <Header />}
       <Routes>
         <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
+        <Route
+          path="/account"
+          element={isAuthenticated ? <Account /> : <Login />}
+        />
       </Routes>
     </Router>
   );

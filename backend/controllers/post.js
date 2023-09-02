@@ -156,6 +156,28 @@ exports.getPostOfFollowing = async (req, res) => {
   }
 };
 
+exports.getMyPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    let posts= []
+    for (let i = 0; i < user.posts.length; i++) {
+      const post = await Post.findById(user.posts[i]).populate("likes comments.user");
+      posts.push(post)
+    }
+
+    res.status(200).json({
+      success: true,
+      posts: posts.reverse(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 exports.addComment = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -222,7 +244,7 @@ exports.deleteComment = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: "Selected comment was deleted successfully",
+        message: "Comment deleted successfully",
       });
     } else {
       let commentFound = false;
@@ -240,7 +262,7 @@ exports.deleteComment = async (req, res) => {
         await post.save();
         return res.status(200).json({
           success: true,
-          message: "Your comment was deleted successfully",
+          message: "Comment deleted successfully",
         });
       } else {
         await post.save();
@@ -297,7 +319,7 @@ exports.updateComment = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: "Your comment was updated successfully",
+        message: "Comment updated successfully!",
       });
     } else {
       return res.status(401).json({

@@ -78,7 +78,7 @@ const Post = ({
       <div className="postDetails">
         <Avatar
           src={ownerImage}
-          alt="User"
+          alt={ownerName}
           sx={{ width: "3vmax", height: "3vmax" }}
         />
 
@@ -157,18 +157,20 @@ const Post = ({
           </form>
 
           {comments && comments.length > 0 ? (
-            comments.toReversed().map((comment) => (
-              <CommentCard
-                key={comment._id}
-                userId={comment.user._id}
-                name={comment.user.name}
-                avatar={comment.user.avatar.url}
-                comment={comment.comment}
-                commentId={comment._id}
-                postId={postId}
-                isAccount={isAccount}
-              />
-            ))
+            comments
+              .toReversed()
+              .map((comment) => (
+                <CommentCard
+                  key={comment._id}
+                  userId={comment.user._id}
+                  name={comment.user.name}
+                  avatar={comment.user.avatar.url}
+                  comment={comment.comment}
+                  commentId={comment._id}
+                  postId={postId}
+                  isAccount={isAccount}
+                />
+              ))
           ) : (
             <Typography>No Comments Yet</Typography>
           )}

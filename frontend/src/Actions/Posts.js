@@ -99,3 +99,23 @@ export const updateComment = (id, commentId, comment) => async (dispatch) => {
     });
   }
 };
+
+export const getMyPosts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "myPostsRequest",
+    });
+
+    const { data } = await axios.get("/api/v1/my/posts");
+
+    dispatch({
+      type: "myPostsSuccess",
+      payload: data.posts,
+    });
+  } catch (error) {
+    dispatch({
+      type: "myPostsFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
