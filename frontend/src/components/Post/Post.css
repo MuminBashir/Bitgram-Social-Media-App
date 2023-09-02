@@ -56,6 +56,12 @@
     padding: 2vmax;
 }
 
+.EditDialogBox {
+    min-width: 500px;
+    height: 20vh;
+    padding: 2vmax;
+}
+
 .commentForm {
     display: flex;
     margin: 1vmax;

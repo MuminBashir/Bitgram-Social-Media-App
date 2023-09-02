@@ -10,7 +10,12 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addComment, getMyPosts, likePost } from "../../Actions/Posts";
+import {
+  addComment,
+  getMyPosts,
+  likePost,
+  updatePost,
+} from "../../Actions/Posts";
 import { getPostOfFollowing } from "../../Actions/User";
 import { User, CommentCard } from "../";
 
@@ -30,14 +35,16 @@ const Post = ({
   const [likesUser, setLikesUser] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [commentToggle, setCommentToggle] = useState(false);
+  const [captionValue, setCaptionValue] = useState(caption);
+  const [captionToggle, setCaptionToggle] = useState(false);
 
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
 
-  const handleLike = async () => {
+  const handleLike = () => {
     setLiked(!liked);
-    await dispatch(likePost(postId));
+    dispatch(likePost(postId));
 
     if (isAccount) {
       dispatch(getMyPosts());
@@ -46,15 +53,21 @@ const Post = ({
     }
   };
 
-  const addCommentHandler = async (e) => {
+  const addCommentHandler = (e) => {
     e.preventDefault();
-    await dispatch(addComment(postId, commentValue));
+    dispatch(addComment(postId, commentValue));
 
     if (isAccount) {
       dispatch(getMyPosts());
     } else {
       dispatch(getPostOfFollowing());
     }
+  };
+
+  const handleEditCaption = (e) => {
+    e.preventDefault();
+    dispatch(updatePost(captionValue, postId));
+    dispatch(getMyPosts());
   };
 
   useEffect(() => {
@@ -70,7 +83,7 @@ const Post = ({
       <div className="postHeader">
         {isAccount && (
           <Button>
-            <MoreVert />
+            <MoreVert onClick={() => setCaptionToggle(!captionToggle)} />
           </Button>
         )}
       </div>
@@ -176,6 +189,28 @@ const Post = ({
           ) : (
             <Typography>No Comments Yet</Typography>
           )}
+        </div>
+      </Dialog>
+      <Dialog
+        open={captionToggle}
+        onClose={() => setCaptionToggle(!captionToggle)}
+      >
+        <div className="EditDialogBox">
+          <Typography variant="h4">Edit Caption</Typography>
+
+          <form className="commentForm" onSubmit={handleEditCaption}>
+            <input
+              type="text"
+              value={captionValue}
+              onChange={(e) => setCaptionValue(e.target.value)}
+              placeholder="Caption..."
+              required
+            />
+
+            <Button type="submit" variant="contained">
+              Edit
+            </Button>
+          </form>
         </div>
       </Dialog>
     </div>
