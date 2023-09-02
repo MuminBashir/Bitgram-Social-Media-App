@@ -50,10 +50,12 @@ const NewPost = () => {
       <form className="newPostForm" onSubmit={handleSubmit}>
         <Typography variant="h3">New Post</Typography>
         {image && <img src={image} alt="post" />}
+
         <input type="file" accept="image/*" onChange={handleImageChange} />
         <Typography variant="caption" color="rgba(0,0,0,0.75)">
           Max size 50 Mb
         </Typography>
+
         <input
           type="text"
           placeholder="Caption..."

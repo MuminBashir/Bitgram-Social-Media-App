@@ -28,6 +28,35 @@ export const loginUser = (email, password) => async (dispatch) => {
   }
 };
 
+export const registerUser =
+  (avatar, name, email, password) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "RegisterRequest",
+      });
+
+      const { data } = await axios.post(
+        "/api/v1/register",
+        { avatar, name, email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      dispatch({
+        type: "RegisterSuccess",
+        payload: data.user,
+      });
+    } catch (error) {
+      dispatch({
+        type: "RegisterFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };
+
 export const loadUser = () => async (dispatch) => {
   try {
     dispatch({

@@ -7,3 +7,4 @@ export { default as Loading } from "./Loading/Loading";
 export { default as CommentCard } from "./CommentCard/CommentCard";
 export { default as Account } from "./Account/Account";
 export { default as NewPost } from "./NewPost/NewPost";
+export { default as Register } from "./Register/Register";
