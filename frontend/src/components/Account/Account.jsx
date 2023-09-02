@@ -6,17 +6,31 @@ import { Loading, Post, User } from "../";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { logoutUser } from "../../Actions/User";
 
 const Account = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { user, loading: userLoading } = useSelector((state) => state.user);
+  const {
+    user,
+    loading: userLoading,
+    isAuthenticated,
+  } = useSelector((state) => state.user);
   const { loading, posts, error } = useSelector((state) => state.myPosts);
   const { message, error: likeError } = useSelector((state) => state.like);
 
   const [followersToggle, setFollowersToggle] = useState(false);
   const [followingToggle, setFollowingToggle] = useState(false);
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    if (isAuthenticated) {
+      alert.success("Logged out successfully");
+    } else {
+      alert.error("Failed to logout");
+    }
+  };
 
   useEffect(() => {
     dispatch(getMyPosts());
@@ -90,7 +104,9 @@ const Account = () => {
 
               <Typography>{user.posts.length}</Typography>
             </div>
-            <Button variant="contained">Logout</Button>
+            <Button variant="contained" onClick={logoutHandler}>
+              Logout
+            </Button>
             <Link to="/update/profile">Edit Profile</Link>
             <Link to="/update/password">Change Password</Link>
             <Button variant="text" style={{ color: "red", margin: "2vmax" }}>
