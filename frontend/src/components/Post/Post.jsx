@@ -12,11 +12,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addComment,
+  deletePost,
   getMyPosts,
   likePost,
   updatePost,
 } from "../../Actions/Posts";
-import { getPostOfFollowing } from "../../Actions/User";
+import { getPostOfFollowing, loadUser } from "../../Actions/User";
 import { User, CommentCard } from "../";
 
 const Post = ({
@@ -42,9 +43,9 @@ const Post = ({
 
   const { user } = useSelector((state) => state.user);
 
-  const handleLike = () => {
+  const handleLike = async () => {
     setLiked(!liked);
-    dispatch(likePost(postId));
+    await dispatch(likePost(postId));
 
     if (isAccount) {
       dispatch(getMyPosts());
@@ -53,9 +54,9 @@ const Post = ({
     }
   };
 
-  const addCommentHandler = (e) => {
+  const addCommentHandler = async (e) => {
     e.preventDefault();
-    dispatch(addComment(postId, commentValue));
+    await dispatch(addComment(postId, commentValue));
 
     if (isAccount) {
       dispatch(getMyPosts());
@@ -68,6 +69,12 @@ const Post = ({
     e.preventDefault();
     dispatch(updatePost(captionValue, postId));
     dispatch(getMyPosts());
+  };
+
+  const handleDeletePost = async () => {
+    await dispatch(deletePost(postId));
+    dispatch(getMyPosts());
+    dispatch(loadUser());
   };
 
   useEffect(() => {
@@ -132,7 +139,7 @@ const Post = ({
         </Button>
         {isDelete && (
           <Button>
-            <DeleteOutline />
+            <DeleteOutline onClick={handleDeletePost} />
           </Button>
         )}
       </div>

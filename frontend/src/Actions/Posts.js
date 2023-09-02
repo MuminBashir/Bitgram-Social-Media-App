@@ -180,3 +180,23 @@ export const updatePost = (caption, id) => async (dispatch) => {
     });
   }
 };
+
+export const deletePost = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "deletePostRequest",
+    });
+
+    const { data } = await axios.delete(`/api/v1/post/${id}`);
+
+    dispatch({
+      type: "deletePostSuccess",
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "deletePostFailure",
+      payload: error.response.data.message,
+    });
+  }
+};

@@ -43,6 +43,7 @@ const Account = () => {
     if (message) {
       alert.success(message);
       dispatch({ type: "clearMessage" });
+      dispatch(getMyPosts());
     }
   }, [dispatch, alert, error, likeError, message]);
 

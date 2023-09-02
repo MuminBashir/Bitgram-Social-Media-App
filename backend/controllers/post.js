@@ -52,6 +52,7 @@ exports.deletePost = async (req, res) => {
         message: "Unauthorized Access",
       });
     } else {
+      await cloudinary.v2.uploader.destroy(post.image.public_id);
       await post.deleteOne();
 
       const user = await User.findById(req.user._id);

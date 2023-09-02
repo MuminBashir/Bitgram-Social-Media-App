@@ -4,6 +4,7 @@ import { Button, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { createNewPost } from "../../Actions/Posts";
+import { loadUser } from "../../Actions/User";
 
 const NewPost = () => {
   const dispatch = useDispatch();
@@ -27,9 +28,10 @@ const NewPost = () => {
     };
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createNewPost(caption, image));
+    await dispatch(createNewPost(caption, image));
+    dispatch(loadUser());
   };
 
   useEffect(() => {
