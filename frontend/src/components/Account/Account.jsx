@@ -15,7 +15,6 @@ const Account = () => {
   const {
     user,
     loading: userLoading,
-    isAuthenticated,
   } = useSelector((state) => state.user);
   const { loading, posts, error } = useSelector((state) => state.myPosts);
   const { message, error: likeError } = useSelector((state) => state.like);
@@ -25,11 +24,7 @@ const Account = () => {
 
   const logoutHandler = () => {
     dispatch(logoutUser());
-    if (isAuthenticated) {
-      alert.success("Logged out successfully");
-    } else {
-      alert.error("Failed to logout");
-    }
+    alert.success("Logged out successfully");
   };
 
   useEffect(() => {
@@ -69,6 +64,7 @@ const Account = () => {
               ownerName={post.owner.name}
               ownerImage={post.owner.avatar.url}
               isAccount={true}
+              isDelete={true}
             />
           ))
         ) : (

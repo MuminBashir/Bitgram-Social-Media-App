@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addComment, likePost } from "../../Actions/Posts";
+import { addComment, getMyPosts, likePost } from "../../Actions/Posts";
 import { getPostOfFollowing } from "../../Actions/User";
 import { User, CommentCard } from "../";
 
@@ -40,6 +40,7 @@ const Post = ({
     await dispatch(likePost(postId));
 
     if (isAccount) {
+      dispatch(getMyPosts());
     } else {
       dispatch(getPostOfFollowing());
     }
@@ -50,6 +51,7 @@ const Post = ({
     await dispatch(addComment(postId, commentValue));
 
     if (isAccount) {
+      dispatch(getMyPosts());
     } else {
       dispatch(getPostOfFollowing());
     }

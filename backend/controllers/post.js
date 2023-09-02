@@ -1,13 +1,17 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const cloudinary = require("cloudinary");
 
 exports.createPost = async (req, res) => {
   try {
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
+      folder: "Bitgram_posts",
+    });
     const newPostData = {
       caption: req.body.caption,
       image: {
-        public_id: "req.body.public_id",
-        url: "req.body.url",
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
       },
       owner: req.user._id,
     };
@@ -16,12 +20,12 @@ exports.createPost = async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    user.posts.push(newPost._id);
+    user.posts.unshift(newPost._id);
     await user.save();
 
     res.status(201).json({
       success: true,
-      post: newPost,
+      message: "Post uploaded successfully!",
     });
   } catch (error) {
     res.status(500).json({
@@ -160,10 +164,12 @@ exports.getMyPosts = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
-    let posts= []
+    let posts = [];
     for (let i = 0; i < user.posts.length; i++) {
-      const post = await Post.findById(user.posts[i]).populate("likes comments.user");
-      posts.push(post)
+      const post = await Post.findById(user.posts[i]).populate(
+        "likes comments.user owner"
+      );
+      posts.push(post);
     }
 
     res.status(200).json({
