@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./Post.css";
-import { Avatar, Button, Typography, Dialog } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Typography,
+  Dialog,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import {
   MoreVert,
   Favorite,
   FavoriteBorder,
   ChatBubbleOutline,
   DeleteOutline,
+  EditOutlined,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +37,6 @@ const Post = ({
   ownerId,
   ownerImage,
   ownerName,
-  isDelete = false,
   isAccount = false,
 }) => {
   const [liked, setLiked] = useState(false);
@@ -38,6 +45,13 @@ const Post = ({
   const [commentToggle, setCommentToggle] = useState(false);
   const [captionValue, setCaptionValue] = useState(caption);
   const [captionToggle, setCaptionToggle] = useState(false);
+
+  // For menu form material UI
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const dispatch = useDispatch();
 
@@ -77,6 +91,19 @@ const Post = ({
     dispatch(loadUser());
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEditCaptionClose = () => {
+    setCaptionToggle(!captionToggle);
+    setAnchorEl(null);
+  };
+  const handleDeletePostClose = async () => {
+    await handleDeletePost();
+    setAnchorEl(null);
+  };
+
   useEffect(() => {
     likes.forEach((like) => {
       if (user._id === like._id) {
@@ -89,11 +116,33 @@ const Post = ({
     <div className="post">
       <div className="postHeader">
         {isAccount && (
-          <Button>
-            <MoreVert onClick={() => setCaptionToggle(!captionToggle)} />
+          <Button
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <MoreVert />
           </Button>
         )}
       </div>
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={handleEditCaptionClose}>
+          <EditOutlined style={{ marginRight: "0.5vmax" }} /> Edit Caption
+        </MenuItem>
+        <MenuItem onClick={handleDeletePostClose}>
+          <DeleteOutline style={{ marginRight: "0.5vmax" }} /> Delete Post
+        </MenuItem>
+      </Menu>
 
       <img src={postImage} alt="Post" />
 
@@ -137,11 +186,6 @@ const Post = ({
         <Button>
           <ChatBubbleOutline onClick={() => setCommentToggle(!commentToggle)} />
         </Button>
-        {isDelete && (
-          <Button>
-            <DeleteOutline onClick={handleDeletePost} />
-          </Button>
-        )}
       </div>
 
       <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>

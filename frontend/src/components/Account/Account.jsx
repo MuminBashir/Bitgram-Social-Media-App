@@ -74,7 +74,6 @@ const Account = () => {
               ownerName={post.owner.name}
               ownerImage={post.owner.avatar.url}
               isAccount={true}
-              isDelete={true}
             />
           ))
         ) : (

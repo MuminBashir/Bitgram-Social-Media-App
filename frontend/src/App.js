@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
@@ -19,49 +24,45 @@ function App() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  const checkTokenCookie = () => {
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-      const [name] = cookie.trim().split("=");
-      if (name === "token") {
-        // Cookie with the name "token" exists
-        return true;
-      }
-    }
-    // Cookie with the name "token" does not exist
-    return false;
-  };
-
   useEffect(() => {
-    if (checkTokenCookie()) {
-      dispatch(loadUser());
-    }
+    dispatch(loadUser());
   }, [dispatch]);
 
   return (
     <Router>
       {isAuthenticated && <Header />}
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
         <Route
-          path="/account"
-          element={isAuthenticated ? <Account /> : <Login />}
+          path="/"
+          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={!isAuthenticated ? <Login /> : <Navigate to="/account" />}
         />
         <Route
           path="/register"
-          element={isAuthenticated ? <Account /> : <Register />}
+          element={!isAuthenticated ? <Register /> : <Navigate to="/account" />}
+        />
+        <Route
+          path="/account"
+          element={isAuthenticated ? <Account /> : <Navigate to="/login" />}
         />
         <Route
           path="/newpost"
-          element={isAuthenticated ? <NewPost /> : <Login />}
+          element={isAuthenticated ? <NewPost /> : <Navigate to="/login" />}
         />
         <Route
           path="/update/profile"
-          element={isAuthenticated ? <UpdateProfile /> : <Login />}
+          element={
+            isAuthenticated ? <UpdateProfile /> : <Navigate to="/login" />
+          }
         />
         <Route
           path="/update/password"
-          element={isAuthenticated ? <UpdatePassword /> : <Login />}
+          element={
+            isAuthenticated ? <UpdatePassword /> : <Navigate to="/login" />
+          }
         />
       </Routes>
     </Router>

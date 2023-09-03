@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { createNewPost } from "../../Actions/Posts";
 import { loadUser } from "../../Actions/User";
+import { useNavigate } from "react-router-dom";
 
 const NewPost = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate();
 
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
@@ -31,7 +33,8 @@ const NewPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await dispatch(createNewPost(caption, image));
-    dispatch(loadUser());
+    await dispatch(loadUser());
+    navigate("/account");
   };
 
   useEffect(() => {
