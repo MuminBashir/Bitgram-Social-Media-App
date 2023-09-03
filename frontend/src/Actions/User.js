@@ -135,3 +135,31 @@ export const logoutUser = () => async (dispatch) => {
     });
   }
 };
+
+export const updateProfile = (avatar, name, email) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "UpdateProfileRequest",
+    });
+
+    const { data } = await axios.put(
+      "/api/v1/update/profile",
+      { avatar, name, email },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({
+      type: "UpdateProfileSuccess",
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "UpdateProfileFailure",
+      payload: error.response.data.message,
+    });
+  }
+};

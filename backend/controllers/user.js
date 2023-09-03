@@ -203,13 +203,13 @@ exports.updateProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
-    const { name, email } = req.body;
+    const { name, email, avatar } = req.body;
 
-    if (name) {
+    if (name && name !== user.name) {
       user.name = name;
     }
 
-    if (email) {
+    if (email && email !== user.email) {
       let userExists = await User.findOne({ email });
       if (userExists) {
         return res
@@ -217,6 +217,15 @@ exports.updateProfile = async (req, res) => {
           .json({ success: false, message: "Email already exists" });
       }
       user.email = email;
+    }
+
+    if (avatar) {
+      await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "Bitgram_avatars",
+      });
+      user.avatar.public_id = myCloud.public_id;
+      user.avatar.url = myCloud.secure_url;
     }
 
     await user.save();
