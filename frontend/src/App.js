@@ -19,8 +19,23 @@ function App() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
 
+  const checkTokenCookie = () => {
+    const cookies = document.cookie.split(";");
+    for (const cookie of cookies) {
+      const [name] = cookie.trim().split("=");
+      if (name === "token") {
+        // Cookie with the name "token" exists
+        return true;
+      }
+    }
+    // Cookie with the name "token" does not exist
+    return false;
+  };
+
   useEffect(() => {
-    dispatch(loadUser());
+    if (checkTokenCookie()) {
+      dispatch(loadUser());
+    }
   }, [dispatch]);
 
   return (

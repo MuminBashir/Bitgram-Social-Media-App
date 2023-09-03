@@ -50,26 +50,28 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.253);
 }
 
-.accountright > a:hover {
+.accountright>a:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.253);
-  }
-  .accountright > div {
+}
+
+.accountright>div {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 1vmax;
-  }
-  
-  .accountright > div > button:hover {
+}
+
+.accountright>div>button:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.253);
-  }
-  .accountright > div > button {
+}
+
+.accountright>div>button {
     border: none;
     background-color: white;
     cursor: pointer;
     transition: all 0.5s;
     padding: 0.5vmax 1vmax;
-  }
+}
 
 @media screen and (max-width: 600px) {
     .account {

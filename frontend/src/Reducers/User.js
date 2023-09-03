@@ -79,6 +79,17 @@ export const userReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
+  DeleteProfileRequest: (state) => {
+    state.loading = true;
+  },
+  DeleteProfileSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  DeleteProfileFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
   clearErrors: (state) => {
     state.error = null;
   },

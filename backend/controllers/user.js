@@ -247,9 +247,13 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findById(req.user._id);
     const { posts, following, followers } = user;
 
+    // Deleting user avatar
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
     // Deleting all posts of user
     for (let i = 0; i < posts.length; i++) {
       const post = await Post.findById(posts[i]);
+      await cloudinary.v2.uploader.destroy(post.image.public_id);
       await post.deleteOne();
     }
 
@@ -271,12 +275,6 @@ exports.deleteUser = async (req, res) => {
 
     // Deleting profile
     await user.deleteOne();
-
-    //Logout user
-    res.cookie("token", null, {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-    });
 
     res.status(200).json({
       success: true,

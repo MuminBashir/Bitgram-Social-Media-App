@@ -6,25 +6,34 @@ import { Loading, Post, User } from "../";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { logoutUser } from "../../Actions/User";
+import { deleteProfile, logoutUser } from "../../Actions/User";
 
 const Account = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const {
-    user,
-    loading: userLoading,
-  } = useSelector((state) => state.user);
+  const { user, loading: userLoading } = useSelector((state) => state.user);
   const { loading, posts, error } = useSelector((state) => state.myPosts);
   const { message, error: likeError } = useSelector((state) => state.like);
 
   const [followersToggle, setFollowersToggle] = useState(false);
   const [followingToggle, setFollowingToggle] = useState(false);
+  const [deleteUserToggle, setDeleteUserToggle] = useState(false);
+  const [deleteUserValue, setDeleteUserValue] = useState("");
 
   const logoutHandler = () => {
     dispatch(logoutUser());
     alert.success("Logged out successfully");
+  };
+
+  const handleDeleteProfile = async (e) => {
+    e.preventDefault();
+    if (deleteUserValue === "Confirm") {
+      await dispatch(deleteProfile());
+      dispatch(logoutUser());
+    } else {
+      alert.error("Type Confirm to delete");
+    }
   };
 
   useEffect(() => {
@@ -106,7 +115,11 @@ const Account = () => {
             </Button>
             <Link to="/update/profile">Edit Profile</Link>
             <Link to="/update/password">Change Password</Link>
-            <Button variant="text" style={{ color: "red", margin: "2vmax" }}>
+            <Button
+              variant="text"
+              style={{ color: "red", margin: "2vmax" }}
+              onClick={() => setDeleteUserToggle(!deleteUserToggle)}
+            >
               Delete Profile
             </Button>
           </>
@@ -155,6 +168,38 @@ const Account = () => {
                 You are not following anyone
               </Typography>
             )}
+          </div>
+        </Dialog>
+        <Dialog
+          open={deleteUserToggle}
+          onClose={() => setDeleteUserToggle(!deleteUserToggle)}
+        >
+          <div className="EditDialogBox">
+            <Typography variant="h4" textAlign="center" marginBottom="1vmax">
+              Delete Profile
+            </Typography>
+            <Typography variant="subtitle" margin="auto">
+              Type <b>Confirm</b> to delete your profile (Once deleted, profile
+              cannot be restored)
+            </Typography>
+
+            <form className="commentForm" onSubmit={handleDeleteProfile}>
+              <input
+                type="text"
+                value={deleteUserValue}
+                onChange={(e) => setDeleteUserValue(e.target.value)}
+                placeholder="Confirm"
+              />
+
+              <Button
+                type="submit"
+                disabled={userLoading}
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+              >
+                Delete
+              </Button>
+            </form>
           </div>
         </Dialog>
       </div>
