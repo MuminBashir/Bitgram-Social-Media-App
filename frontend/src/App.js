@@ -3,7 +3,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
-import { Account, Header, Home, Login, NewPost, Register, UpdateProfile } from "./components";
+import {
+  Account,
+  Header,
+  Home,
+  Login,
+  NewPost,
+  Register,
+  UpdatePassword,
+  UpdateProfile,
+} from "./components";
 import { loadUser } from "./Actions/User";
 
 function App() {
@@ -34,6 +43,10 @@ function App() {
         <Route
           path="/update/profile"
           element={isAuthenticated ? <UpdateProfile /> : <Login />}
+        />
+        <Route
+          path="/update/password"
+          element={isAuthenticated ? <UpdatePassword /> : <Login />}
         />
       </Routes>
     </Router>

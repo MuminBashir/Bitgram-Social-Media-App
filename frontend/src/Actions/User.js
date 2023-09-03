@@ -163,3 +163,32 @@ export const updateProfile = (avatar, name, email) => async (dispatch) => {
     });
   }
 };
+
+export const updatePassword =
+  (oldPassword, newPassword) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "UpdatePasswordRequest",
+      });
+
+      const { data } = await axios.put(
+        "/api/v1/update/password",
+        { oldPassword, newPassword },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      dispatch({
+        type: "UpdatePasswordSuccess",
+        payload: data.message,
+      });
+    } catch (error) {
+      dispatch({
+        type: "UpdatePasswordFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };

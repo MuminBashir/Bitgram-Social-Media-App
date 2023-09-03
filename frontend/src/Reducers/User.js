@@ -68,6 +68,17 @@ export const userReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
+  UpdatePasswordRequest: (state) => {
+    state.loading = true;
+  },
+  UpdatePasswordSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  UpdatePasswordFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
   clearErrors: (state) => {
     state.error = null;
   },

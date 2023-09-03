@@ -9,3 +9,4 @@ export { default as Account } from "./Account/Account";
 export { default as NewPost } from "./NewPost/NewPost";
 export { default as Register } from "./Register/Register";
 export { default as UpdateProfile } from "./UpdateProfile/UpdateProfile";
+export { default as UpdatePassword } from "./UpdatePassword/UpdatePassword";
