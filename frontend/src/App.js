@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import {
   Account,
+  ForgotPassword,
   Header,
   Home,
   Login,
   NewPost,
   Register,
+  ResetPassword,
   UpdatePassword,
   UpdateProfile,
 } from "./components";
@@ -38,11 +40,11 @@ function App() {
         />
         <Route
           path="/login"
-          element={!isAuthenticated ? <Login /> : <Navigate to="/account" />}
+          element={isAuthenticated ? <Navigate to="/account" /> : <Login />}
         />
         <Route
           path="/register"
-          element={!isAuthenticated ? <Register /> : <Navigate to="/account" />}
+          element={isAuthenticated ? <Navigate to="/account" /> : <Register />}
         />
         <Route
           path="/account"
@@ -62,6 +64,18 @@ function App() {
           path="/update/password"
           element={
             isAuthenticated ? <UpdatePassword /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/forgot/password"
+          element={
+            isAuthenticated ? <Navigate to="/update/password" /> : <ForgotPassword/>
+          }
+        />
+        <Route
+          path="/password/reset/:token"
+          element={
+            isAuthenticated ? <Navigate to="/update/password" /> : <ResetPassword/>
           }
         />
       </Routes>

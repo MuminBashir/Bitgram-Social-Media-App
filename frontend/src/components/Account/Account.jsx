@@ -73,6 +73,7 @@ const Account = () => {
               ownerId={post.owner._id}
               ownerName={post.owner.name}
               ownerImage={post.owner.avatar.url}
+              createdAt={post.createdAt}
               isAccount={true}
             />
           ))

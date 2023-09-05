@@ -90,6 +90,28 @@ export const userReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
+  ForgotPasswordRequest: (state) => {
+    state.loading = true;
+  },
+  ForgotPasswordSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  ForgotPasswordFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  ResetPasswordRequest: (state) => {
+    state.loading = true;
+  },
+  ResetPasswordSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  ResetPasswordFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
   clearErrors: (state) => {
     state.error = null;
   },

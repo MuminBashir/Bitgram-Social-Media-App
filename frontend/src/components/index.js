@@ -10,3 +10,5 @@ export { default as NewPost } from "./NewPost/NewPost";
 export { default as Register } from "./Register/Register";
 export { default as UpdateProfile } from "./UpdateProfile/UpdateProfile";
 export { default as UpdatePassword } from "./UpdatePassword/UpdatePassword";
+export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
+export { default as ResetPassword } from "./ResetPassword/ResetPassword";

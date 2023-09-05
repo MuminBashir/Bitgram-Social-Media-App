@@ -17,6 +17,7 @@ import {
   EditOutlined,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addComment,
@@ -37,6 +38,7 @@ const Post = ({
   ownerId,
   ownerImage,
   ownerName,
+  createdAt,
   isAccount = false,
 }) => {
   const [liked, setLiked] = useState(false);
@@ -186,6 +188,10 @@ const Post = ({
         <Button>
           <ChatBubbleOutline onClick={() => setCommentToggle(!commentToggle)} />
         </Button>
+
+        <Typography variant="caption" margin="0 2vmax" color="rgba(0,0,0,0.734)">
+          {moment(createdAt).startOf("ss").fromNow()}
+        </Typography>
       </div>
 
       <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>
