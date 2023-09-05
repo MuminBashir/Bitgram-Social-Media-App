@@ -23,6 +23,7 @@ import {
   addComment,
   deletePost,
   getMyPosts,
+  getUserPosts,
   likePost,
   updatePost,
 } from "../../Actions/Posts";
@@ -40,6 +41,7 @@ const Post = ({
   ownerName,
   createdAt,
   isAccount = false,
+  isUser = false,
 }) => {
   const [liked, setLiked] = useState(false);
   const [likesUser, setLikesUser] = useState(false);
@@ -58,6 +60,7 @@ const Post = ({
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
+  const { user: getUser } = useSelector((state) => state.getUser);
 
   const handleLike = async () => {
     setLiked(!liked);
@@ -65,6 +68,8 @@ const Post = ({
 
     if (isAccount) {
       dispatch(getMyPosts());
+    } else if (isUser) {
+      dispatch(getUserPosts(getUser._id));
     } else {
       dispatch(getPostOfFollowing());
     }
@@ -76,6 +81,8 @@ const Post = ({
 
     if (isAccount) {
       dispatch(getMyPosts());
+    } else if (isUser) {
+      dispatch(getUserPosts(getUser._id));
     } else {
       dispatch(getPostOfFollowing());
     }
@@ -189,7 +196,11 @@ const Post = ({
           <ChatBubbleOutline onClick={() => setCommentToggle(!commentToggle)} />
         </Button>
 
-        <Typography variant="caption" margin="0 2vmax" color="rgba(0,0,0,0.734)">
+        <Typography
+          variant="caption"
+          margin="0 2vmax"
+          color="rgba(0,0,0,0.734)"
+        >
           {moment(createdAt).startOf("ss").fromNow()}
         </Typography>
       </div>
@@ -241,6 +252,7 @@ const Post = ({
                   commentId={comment._id}
                   postId={postId}
                   isAccount={isAccount}
+                  isUser={isUser}
                 />
               ))
           ) : (

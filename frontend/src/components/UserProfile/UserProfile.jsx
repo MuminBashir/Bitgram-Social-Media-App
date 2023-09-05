@@ -5,42 +5,70 @@ import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { getMyPosts, getUserPosts } from "../../Actions/Posts";
-import { getUserProfile } from "../../Actions/User";
+import { followUnfollowUser, getUserProfile, loadUser } from "../../Actions/User";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const params = useParams();
 
-  const { user, loading: userLoading } = useSelector((state) => state.getUser);
+  const {
+    user,
+    loading: userLoading,
+    error: userError,
+  } = useSelector((state) => state.getUser);
   const { user: me } = useSelector((state) => state.user);
   const { loading, posts, error } = useSelector((state) => state.userPosts);
-  const { message, error: likeError } = useSelector((state) => state.like);
+  const {
+    message,
+    error: followError,
+    loading: followLoading,
+  } = useSelector((state) => state.like);
 
   const [followersToggle, setFollowersToggle] = useState(false);
   const [followingToggle, setFollowingToggle] = useState(false);
   const [following, setFollowing] = useState(false);
   const [myProfile, setMyProfile] = useState(false);
 
-  const followHandler = () => {
+  const followHandler = async () => {
     setFollowing(!following);
+    await dispatch(followUnfollowUser(params.id));
+    dispatch(getUserProfile(params.id));
+    dispatch(loadUser())
   };
+
+  useEffect(() => {
+    dispatch(getUserPosts(params.id));
+    dispatch(getUserProfile(params.id));
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     if (params.id === me._id) {
       setMyProfile(true);
     }
-    dispatch(getUserPosts(params.id));
-    dispatch(getUserProfile(params.id));
-  }, [dispatch, params.id, me._id]);
+
+    if (user) {
+      user.followers.forEach((item) => {
+        if (item._id === me._id) {
+          setFollowing(true);
+        } else {
+          setFollowing(false);
+        }
+      });
+    }
+  }, [params.id, me._id, user]);
 
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch({ type: "clearErrors" });
     }
-    if (likeError) {
-      alert.error(likeError);
+    if (userError) {
+      alert.error(userError);
+      dispatch({ type: "clearErrors" });
+    }
+    if (followError) {
+      alert.error(followError);
       dispatch({ type: "clearErrors" });
     }
     if (message) {
@@ -48,7 +76,7 @@ const UserProfile = () => {
       dispatch({ type: "clearMessage" });
       dispatch(getMyPosts());
     }
-  }, [dispatch, alert, error, likeError, message]);
+  }, [dispatch, alert, error, followError, message, userError]);
 
   return (
     <div className="account">
@@ -68,6 +96,7 @@ const UserProfile = () => {
               ownerName={post.owner.name}
               ownerImage={post.owner.avatar.url}
               createdAt={post.createdAt}
+              isUser={true}
             />
           ))
         ) : (
@@ -110,6 +139,7 @@ const UserProfile = () => {
                 variant="contained"
                 style={{ backgroundColor: following ? "red" : "blue" }}
                 onClick={followHandler}
+                disabled={followLoading}
               >
                 {following ? "Unfollow" : "Follow"}
               </Button>

@@ -280,3 +280,23 @@ export const getUserProfile = (id) => async (dispatch) => {
     });
   }
 };
+
+export const followUnfollowUser = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "followRequest",
+    });
+
+    const { data } = await axios.get(`/api/v1/follow/${id}`);
+
+    dispatch({
+      type: "followSuccess",
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "followFailure",
+      payload: error.response.data.message,
+    });
+  }
+};

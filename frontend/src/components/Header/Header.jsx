@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Home,
@@ -15,6 +15,9 @@ import "./Header.css";
 
 const Header = () => {
   const [tab, setTab] = useState(window.location.pathname);
+  useEffect(()=>{
+    setTab(window.location.pathname)
+  },[])
   return (
     <div className="header">
       <Link to="/" onClick={() => setTab("/")}>

@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { Button, Dialog, Typography } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteComment, updateComment } from "../../Actions/Posts";
+import {
+  deleteComment,
+  getMyPosts,
+  getUserPosts,
+  updateComment,
+} from "../../Actions/Posts";
 import { getPostOfFollowing } from "../../Actions/User";
 
 const CommentCard = ({
@@ -15,17 +20,22 @@ const CommentCard = ({
   commentId,
   postId,
   isAccount,
+  isUser,
 }) => {
   const [editToggle, setEditToggle] = useState(false);
   const [EditCommentValue, setEditCommentValue] = useState(comment);
 
   const { user } = useSelector((state) => state.user);
+  const { user: getUser } = useSelector((state) => state.getUser);
   const dispatch = useDispatch();
 
   const handleDeleteComment = async () => {
     await dispatch(deleteComment(postId, commentId));
 
     if (isAccount) {
+      dispatch(getMyPosts());
+    } else if (isUser) {
+      dispatch(getUserPosts(getUser._id));
     } else {
       dispatch(getPostOfFollowing());
     }
@@ -35,6 +45,9 @@ const CommentCard = ({
     await dispatch(updateComment(postId, commentId, EditCommentValue));
 
     if (isAccount) {
+      dispatch(getMyPosts());
+    } else if (isUser) {
+      dispatch(getUserPosts(getUser._id));
     } else {
       dispatch(getPostOfFollowing());
     }

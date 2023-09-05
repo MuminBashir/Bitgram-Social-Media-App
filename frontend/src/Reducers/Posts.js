@@ -79,6 +79,17 @@ export const likeReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
+  followRequest: (state) => {
+    state.loading = true;
+  },
+  followSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  followFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
   clearErrors: (state) => {
     state.error = null;
   },
