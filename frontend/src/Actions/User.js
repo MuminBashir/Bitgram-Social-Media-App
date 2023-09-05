@@ -260,3 +260,23 @@ export const resetPassword = (token, password) => async (dispatch) => {
     });
   }
 };
+
+export const getUserProfile = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "getUserRequest",
+    });
+
+    const { data } = await axios.get(`/api/v1/user/${id}`);
+
+    dispatch({
+      type: "getUserSuccess",
+      payload: data.user,
+    });
+  } catch (error) {
+    dispatch({
+      type: "getUserFailure",
+      payload: error.response.data.message,
+    });
+  }
+};

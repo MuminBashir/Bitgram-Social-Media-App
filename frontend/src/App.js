@@ -19,11 +19,13 @@ import {
   ResetPassword,
   UpdatePassword,
   UpdateProfile,
+  UserProfile,
 } from "./components";
 import { loadUser } from "./Actions/User";
 
 function App() {
   const dispatch = useDispatch();
+
   const { isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -69,14 +71,26 @@ function App() {
         <Route
           path="/forgot/password"
           element={
-            isAuthenticated ? <Navigate to="/update/password" /> : <ForgotPassword/>
+            isAuthenticated ? (
+              <Navigate to="/update/password" />
+            ) : (
+              <ForgotPassword />
+            )
           }
         />
         <Route
           path="/password/reset/:token"
           element={
-            isAuthenticated ? <Navigate to="/update/password" /> : <ResetPassword/>
+            isAuthenticated ? (
+              <Navigate to="/update/password" />
+            ) : (
+              <ResetPassword />
+            )
           }
+        />
+        <Route
+          path="/user/:id"
+          element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

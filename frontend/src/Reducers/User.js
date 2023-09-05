@@ -159,3 +159,23 @@ export const allUsersReducer = createReducer(
     },
   }
 );
+
+export const getUserReducer = createReducer(
+  {},
+  {
+    getUserRequest: (state) => {
+      state.loading = true;
+    },
+    getUserSuccess: (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    },
+    getUserFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clearErrors: (state) => {
+      state.error = null;
+    },
+  }
+);

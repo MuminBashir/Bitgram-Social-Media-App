@@ -200,3 +200,23 @@ export const deletePost = (id) => async (dispatch) => {
     });
   }
 };
+
+export const getUserPosts = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "userPostsRequest",
+    });
+
+    const { data } = await axios.get(`/api/v1/userposts/${id}`);
+
+    dispatch({
+      type: "userPostsSuccess",
+      payload: data.posts,
+    });
+  } catch (error) {
+    dispatch({
+      type: "userPostsFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
