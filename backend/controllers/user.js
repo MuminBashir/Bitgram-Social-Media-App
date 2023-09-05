@@ -273,6 +273,29 @@ exports.deleteUser = async (req, res) => {
       await userFollowing.save();
     }
 
+    // Deleting all comments of the user from all posts
+    const allPosts = await Post.find();
+    for (let i = 0; i < allPosts.length; i++) {
+      const post = await Post.findById(allPosts[i]._id);
+      for (let j = 0; j < post.comments.length; j++) {
+        if (post.comments[j].user.toString() === user._id.toString()) {
+          post.comments.splice(j, 1);
+        }
+      }
+      await post.save();
+    }
+
+    // Deleting all likes of the user from all posts
+    for (let i = 0; i < allPosts.length; i++) {
+      const post = await Post.findById(allPosts[i]._id);
+      for (let j = 0; j < post.likes.length; j++) {
+        if (post.likes[j].toString() === user._id.toString()) {
+          post.likes.splice(j, 1);
+        }
+      }
+      await post.save();
+    }
+
     // Deleting profile
     await user.deleteOne();
 
