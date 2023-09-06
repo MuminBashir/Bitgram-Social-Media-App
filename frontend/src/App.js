@@ -15,8 +15,10 @@ import {
   Home,
   Login,
   NewPost,
+  NotFound,
   Register,
   ResetPassword,
+  Search,
   UpdatePassword,
   UpdateProfile,
   UserProfile,
@@ -29,8 +31,29 @@ function App() {
   const { isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(loadUser());
+    if (
+      window.location.pathname !== "/register" &&
+      window.location.pathname !== "/forgot/password" &&
+      !window.location.pathname.includes("/password/reset/")
+    ) {
+      dispatch(loadUser());
+    }
+    const handleBeforeUnload = () => {
+      localStorage.setItem("lastPath", window.location.pathname);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, [dispatch]);
+
+  let lastPath = localStorage.getItem("lastPath");
+  if (lastPath === "/login") {
+    lastPath = "/";
+  }
+  const redirectToPath = lastPath || "/";
 
   return (
     <Router>
@@ -42,11 +65,15 @@ function App() {
         />
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/account" /> : <Login />}
+          element={
+            isAuthenticated ? <Navigate to={redirectToPath} /> : <Login />
+          }
         />
         <Route
           path="/register"
-          element={isAuthenticated ? <Navigate to="/account" /> : <Register />}
+          element={
+            isAuthenticated ? <Navigate to={redirectToPath} /> : <Register />
+          }
         />
         <Route
           path="/account"
@@ -92,6 +119,13 @@ function App() {
           path="/user/:id"
           element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />}
         />
+
+        <Route
+          path="/search"
+          element={isAuthenticated ? <Search /> : <Navigate to="/login" />}
+        />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

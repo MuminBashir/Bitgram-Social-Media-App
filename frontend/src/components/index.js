@@ -13,3 +13,5 @@ export { default as UpdatePassword } from "./UpdatePassword/UpdatePassword";
 export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
 export { default as ResetPassword } from "./ResetPassword/ResetPassword";
 export { default as UserProfile } from "./UserProfile/UserProfile";
+export { default as Search } from "./Search/Search";
+export { default as NotFound } from "./NotFound/NotFound";
