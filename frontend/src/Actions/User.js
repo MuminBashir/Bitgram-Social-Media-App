@@ -1,5 +1,6 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
+const address = "https://bitgram-api.vercel.app";
 
 export const loginUser = (email, password) => async (dispatch) => {
   try {
@@ -8,7 +9,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     });
 
     const { data } = await axios.post(
-      "/api/v1/login",
+      `${address}/api/v1/login`,
       { email, password },
       {
         headers: {
@@ -37,7 +38,7 @@ export const registerUser =
       });
 
       const { data } = await axios.post(
-        "/api/v1/register",
+        `${address}/api/v1/register`,
         { avatar, name, email, password },
         {
           headers: {
@@ -64,7 +65,7 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserRequest",
     });
 
-    const { data } = await axios.get("/api/v1/me");
+    const { data } = await axios.get(`${address}/api/v1/me`);
 
     dispatch({
       type: "LoadUserSuccess",
@@ -84,7 +85,7 @@ export const getPostOfFollowing = () => async (dispatch) => {
       type: "postOfFollowingRequest",
     });
 
-    const { data } = await axios.get("/api/v1/posts");
+    const { data } = await axios.get(`${address}/api/v1/posts`);
 
     dispatch({
       type: "postOfFollowingSuccess",
@@ -106,7 +107,7 @@ export const getAllUsers =
         type: "allUsersRequest",
       });
 
-      const { data } = await axios.get(`/api/v1/users?name=${name}`);
+      const { data } = await axios.get(`${address}/api/v1/users?name=${name}`);
 
       dispatch({
         type: "allUsersSuccess",
@@ -126,7 +127,7 @@ export const logoutUser = () => async (dispatch) => {
       type: "LogoutUserRequest",
     });
 
-    await axios.get("/api/v1/logout");
+    await axios.get(`${address}/api/v1/logout`);
 
     dispatch({
       type: "LogoutUserSuccess",
@@ -146,7 +147,7 @@ export const updateProfile = (avatar, name, email) => async (dispatch) => {
     });
 
     const { data } = await axios.put(
-      "/api/v1/update/profile",
+      `${address}/api/v1/update/profile`,
       { avatar, name, email },
       {
         headers: {
@@ -175,7 +176,7 @@ export const updatePassword =
       });
 
       const { data } = await axios.put(
-        "/api/v1/update/password",
+        `${address}/api/v1/update/password`,
         { oldPassword, newPassword },
         {
           headers: {
@@ -202,7 +203,7 @@ export const deleteProfile = () => async (dispatch) => {
       type: "DeleteProfileRequest",
     });
 
-    const { data } = await axios.delete("/api/v1/delete/me");
+    const { data } = await axios.delete(`${address}/api/v1/delete/me`);
 
     dispatch({
       type: "DeleteProfileSuccess",
@@ -223,7 +224,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     });
 
     const { data } = await axios.post(
-      "/api/v1/forgot/password",
+      `${address}/api/v1/forgot/password`,
       { email },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -247,7 +248,7 @@ export const resetPassword = (token, password) => async (dispatch) => {
     });
 
     const { data } = await axios.put(
-      `/api/v1/password/reset/${token}`,
+      `${address}/api/v1/password/reset/${token}`,
       { password },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -270,7 +271,7 @@ export const getUserProfile = (id) => async (dispatch) => {
       type: "getUserRequest",
     });
 
-    const { data } = await axios.get(`/api/v1/user/${id}`);
+    const { data } = await axios.get(`${address}/api/v1/user/${id}`);
 
     dispatch({
       type: "getUserSuccess",
@@ -290,7 +291,7 @@ export const followUnfollowUser = (id) => async (dispatch) => {
       type: "followRequest",
     });
 
-    const { data } = await axios.get(`/api/v1/follow/${id}`);
+    const { data } = await axios.get(`${address}/api/v1/follow/${id}`);
 
     dispatch({
       type: "followSuccess",

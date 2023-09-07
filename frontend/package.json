@@ -47,5 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://bitgram-api.vercel.app"
+  "proxy": "http://localhost:4000"
 }
