@@ -27,7 +27,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     const expirationDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
     const expires = expirationDate.toUTCString();
 
-    document.cookie = `token=${data.token}; expires=${expires}; path=/; HttpOnly`;
+    document.cookie = `token=${data.token}; expires=${expires}; path=/`;
   } catch (error) {
     dispatch({
       type: "LoginFailure",
@@ -62,7 +62,7 @@ export const registerUser =
       const expirationDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
       const expires = expirationDate.toUTCString();
 
-      document.cookie = `token=${data.token}; expires=${expires}; path=/; HttpOnly`;
+      document.cookie = `token=${data.token}; expires=${expires}; path=/`;
     } catch (error) {
       dispatch({
         type: "RegisterFailure",
@@ -147,7 +147,7 @@ export const logoutUser = () => async (dispatch) => {
 
     const expirationDate = new Date(0);
     const expires = `expires=${expirationDate.toUTCString()}`;
-    document.cookie = `token=${null}; expires=${expires}; path=/; HttpOnly`;
+    document.cookie = `token=${null}; expires=${expires}; path=/`;
   } catch (error) {
     dispatch({
       type: "LogoutUserFailure",
