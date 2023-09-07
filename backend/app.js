@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== "production") {
 //Setting cors for frontend
 app.use(
   cors({
-    origin: ["https://bitgram.vercel.app/register"],
+    origin: ["https://bitgram.vercel.app"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
