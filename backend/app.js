@@ -8,21 +8,13 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 //Setting cors for frontend
-app.use(
-  cors({
-    origin: ["https://bitgram.vercel.app"],
-    methods: ["POST", "GET", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
 
-// Enable CORS for all routes
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://bitgram.vercel.app');
-  // You can specify more headers as needed
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors(corsConfig));
+app.options("*", cors(corsConfig));
 
 // Using Middlewares
 app.use(express.json({ limit: "50mb" }));
