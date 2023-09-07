@@ -9,7 +9,8 @@ export const userReducer = createReducer(initialState, {
   },
   LoginSuccess: (state, action) => {
     state.loading = false;
-    state.user = action.payload;
+    state.user = action.payload.user;
+    state.token = action.payload.token;
     state.isAuthenticated = true;
   },
   LoginFailure: (state, action) => {
@@ -23,7 +24,8 @@ export const userReducer = createReducer(initialState, {
   },
   RegisterSuccess: (state, action) => {
     state.loading = false;
-    state.user = action.payload;
+    state.user = action.payload.user;
+    state.token = action.payload.token;
     state.isAuthenticated = true;
   },
   RegisterFailure: (state, action) => {

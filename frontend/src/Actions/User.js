@@ -20,14 +20,11 @@ export const loginUser = (email, password) => async (dispatch) => {
 
     dispatch({
       type: "LoginSuccess",
-      payload: data.user,
+      payload: {
+        user: data.user,
+        token: data.token,
+      },
     });
-
-    const now = new Date();
-    const expirationDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-    const expires = expirationDate.toUTCString();
-
-    document.cookie = `token=${data.token}; expires=${expires}; path=/`;
   } catch (error) {
     dispatch({
       type: "LoginFailure",
@@ -55,14 +52,11 @@ export const registerUser =
 
       dispatch({
         type: "RegisterSuccess",
-        payload: data.user,
+        payload: {
+          user: data.user,
+          token: data.token,
+        }
       });
-
-      const now = new Date();
-      const expirationDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-      const expires = expirationDate.toUTCString();
-
-      document.cookie = `token=${data.token}; expires=${expires}; path=/`;
     } catch (error) {
       dispatch({
         type: "RegisterFailure",
@@ -144,10 +138,6 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: "LogoutUserSuccess",
     });
-
-    const expirationDate = new Date(0);
-    const expires = `expires=${expirationDate.toUTCString()}`;
-    document.cookie = `token=${null}; expires=${expires}; path=/`;
   } catch (error) {
     dispatch({
       type: "LogoutUserFailure",
