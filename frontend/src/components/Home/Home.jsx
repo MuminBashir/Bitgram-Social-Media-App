@@ -4,15 +4,20 @@ import { Post, User, Loading } from "../";
 import "./Home.css";
 import { getAllUsers, getPostOfFollowing } from "../../Actions/User";
 import { Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAlert } from "react-alert";
 
 const Home = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
+
   const { loading, posts, error } = useSelector(
     (state) => state.postOfFollowing
   );
+
+  const { user: me } = useSelector((state) => state.user);
 
   const { users, loading: usersLoading } = useSelector(
     (state) => state.allUsers
@@ -61,21 +66,35 @@ const Home = () => {
             />
           ))
         ) : (
-          <Typography variant="h6">No Posts Yet</Typography>
+          <Typography variant="h5" marginTop={isSmallScreen ? "50%" : "2%"}>
+            No Posts Yet
+          </Typography>
         )}
       </div>
       <div className="homeright">
+        <Typography variant="h6" textAlign="center">
+          Suggested Users
+        </Typography>
         {usersLoading ? (
           <Loading />
         ) : users && users.length > 0 ? (
-          users.map((user) => (
-            <User
-              key={user._id}
-              userId={user._id}
-              name={user.name}
-              avatar={user.avatar.url}
-            />
-          ))
+          users.map((user, index) => {
+            if (index > 5) {
+              return null;
+            }
+            if (user._id === me._id) {
+              return null;
+            } else {
+              return (
+                <User
+                  key={user._id}
+                  userId={user._id}
+                  name={user.name}
+                  avatar={user.avatar.url}
+                />
+              );
+            }
+          })
         ) : (
           <Typography>No Users Yet</Typography>
         )}

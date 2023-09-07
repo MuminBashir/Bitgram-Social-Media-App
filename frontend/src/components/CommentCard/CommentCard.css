@@ -28,7 +28,7 @@
     transform: translateY(-5px);
 }
 
-.commentUser>button {
+.commentUser>div>button {
     color: red;
 }
 
@@ -36,4 +36,13 @@
     min-width: 500px;
     height: 20vh;
     padding: 2vmax;
+}
+
+@media screen and (max-width: 600px) {
+    .commentUser {
+        width: 60%;
+        margin: 4vw 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

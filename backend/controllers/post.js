@@ -227,7 +227,7 @@ exports.addComment = async (req, res) => {
       });
     }
 
-    post.comments.push({
+    post.comments.unshift({
       user: req.user._id,
       comment: req.body.comment,
     });

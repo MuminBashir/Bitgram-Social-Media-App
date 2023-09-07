@@ -16,6 +16,7 @@ import {
   DeleteOutline,
   EditOutlined,
 } from "@mui/icons-material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +50,8 @@ const Post = ({
   const [commentToggle, setCommentToggle] = useState(false);
   const [captionValue, setCaptionValue] = useState(caption);
   const [captionToggle, setCaptionToggle] = useState(false);
+
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   // For menu form material UI
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -198,7 +201,7 @@ const Post = ({
 
         <Typography
           variant="caption"
-          margin="0 2vmax"
+          margin="0 1vmax"
           color="rgba(0,0,0,0.734)"
         >
           {moment(createdAt).startOf("ss").fromNow()}
@@ -223,7 +226,9 @@ const Post = ({
         onClose={() => setCommentToggle(!commentToggle)}
       >
         <div className="DialogBox">
-          <Typography variant="h4">Comments</Typography>
+          <Typography variant={isSmallScreen ? "h6" : "h4"}>
+            Comments
+          </Typography>
 
           <form className="commentForm" onSubmit={addCommentHandler}>
             <input
@@ -240,21 +245,19 @@ const Post = ({
           </form>
 
           {comments && comments.length > 0 ? (
-            comments
-              .toReversed()
-              .map((comment) => (
-                <CommentCard
-                  key={comment._id}
-                  userId={comment.user._id}
-                  name={comment.user.name}
-                  avatar={comment.user.avatar.url}
-                  comment={comment.comment}
-                  commentId={comment._id}
-                  postId={postId}
-                  isAccount={isAccount}
-                  isUser={isUser}
-                />
-              ))
+            comments.map((comment) => (
+              <CommentCard
+                key={comment._id}
+                userId={comment.user._id}
+                name={comment.user.name}
+                avatar={comment.user.avatar.url}
+                comment={comment.comment}
+                commentId={comment._id}
+                postId={postId}
+                isAccount={isAccount}
+                isUser={isUser}
+              />
+            ))
           ) : (
             <Typography>No Comments Yet</Typography>
           )}
@@ -265,9 +268,9 @@ const Post = ({
         onClose={() => setCaptionToggle(!captionToggle)}
       >
         <div className="EditDialogBox">
-          <Typography variant="h4">Edit Caption</Typography>
+          <Typography variant={isSmallScreen ? "h6" : "h4"}>Edit Caption</Typography>
 
-          <form className="commentForm" onSubmit={handleEditCaption}>
+          <form className="editForm" onSubmit={handleEditCaption}>
             <input
               type="text"
               value={captionValue}

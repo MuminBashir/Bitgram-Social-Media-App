@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMyPosts } from "../../Actions/Posts";
 import { Loading, Post, User } from "../";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { deleteProfile, logoutUser } from "../../Actions/User";
@@ -11,6 +12,8 @@ import { deleteProfile, logoutUser } from "../../Actions/User";
 const Account = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   const { user, loading: userLoading } = useSelector((state) => state.user);
   const { loading, posts, error } = useSelector((state) => state.myPosts);
@@ -78,7 +81,12 @@ const Account = () => {
             />
           ))
         ) : (
-          <Typography variant="h6">You have not made any posts yet.</Typography>
+          <Typography
+            variant={isSmallScreen ? "boody1" : "h6"}
+            marginTop={isSmallScreen ? "30vh" : "2%"}
+          >
+            You have not made any posts yet.
+          </Typography>
         )}
       </div>
       <div className="accountright">
@@ -175,7 +183,11 @@ const Account = () => {
           onClose={() => setDeleteUserToggle(!deleteUserToggle)}
         >
           <div className="EditDialogBox">
-            <Typography variant="h4" textAlign="center" marginBottom="1vmax">
+            <Typography
+              variant={isSmallScreen ? "h6" : "h4"}
+              textAlign="center"
+              marginBottom="1vmax"
+            >
               Delete Profile
             </Typography>
             <Typography variant="subtitle" margin="auto">
@@ -183,7 +195,7 @@ const Account = () => {
               cannot be restored)
             </Typography>
 
-            <form className="commentForm" onSubmit={handleDeleteProfile}>
+            <form className="deleteForm" onSubmit={handleDeleteProfile}>
               <input
                 type="text"
                 value={deleteUserValue}

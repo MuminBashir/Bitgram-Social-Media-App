@@ -40,3 +40,18 @@
 .homeUser:hover{
     transform: translateY(-5px);
 }
+
+@media screen and (max-width: 600px) {
+    .home {
+      grid-template-columns: 1fr;
+    }
+  
+    .homeleft {
+      padding: 0;
+      min-height: 90vh;
+    }
+
+    .homeright{
+        display: none;
+    }
+  }

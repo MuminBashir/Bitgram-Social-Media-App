@@ -3,6 +3,7 @@ import "./CommentCard.css";
 import { Link } from "react-router-dom";
 import { Button, Dialog, Typography } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteComment,
@@ -24,6 +25,8 @@ const CommentCard = ({
 }) => {
   const [editToggle, setEditToggle] = useState(false);
   const [EditCommentValue, setEditCommentValue] = useState(comment);
+
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   const { user } = useSelector((state) => state.user);
   const { user: getUser } = useSelector((state) => state.getUser);
@@ -59,32 +62,37 @@ const CommentCard = ({
         <img src={avatar} alt={name} />
         <Typography style={{ minWidth: "6vmax" }}>{name}</Typography>
       </Link>
-      <Typography marginRight="15%" width="40%">
+      <Typography marginLeft="15px" marginRight="15%" width="40%">
         {comment}
       </Typography>
 
       {isAccount ? (
-        <>
+        <div>
+          {userId === user._id ? (
+            <Button onClick={() => setEditToggle(!editToggle)}>
+              <Edit />
+            </Button>
+          ) : null}
           <Button onClick={handleDeleteComment}>
             <Delete />
           </Button>
-        </>
+        </div>
       ) : userId === user._id ? (
-        <>
-          <Button onClick={handleDeleteComment}>
-            <Delete />
-          </Button>
+        <div>
           <Button onClick={() => setEditToggle(!editToggle)}>
             <Edit />
           </Button>
-        </>
+          <Button onClick={handleDeleteComment}>
+            <Delete />
+          </Button>
+        </div>
       ) : null}
 
       <Dialog open={editToggle} onClose={() => setEditToggle(!editToggle)}>
         <div className="EditDialogBox">
-          <Typography variant="h4">Edit Comment</Typography>
+          <Typography variant={isSmallScreen ? "h6" : "h4"}>Edit Comment</Typography>
 
-          <form className="commentForm" onSubmit={handleEditComment}>
+          <form className="editForm" onSubmit={handleEditComment}>
             <input
               type="text"
               value={EditCommentValue}
