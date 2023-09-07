@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
     const token = await user.generateToken();
 
     const options = {
-      domain: "https://bitgram.vercel.app",
+      domain: ".vercel.app",
       sameSite: "None",
       secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -75,7 +75,7 @@ exports.login = async (req, res) => {
     const token = await user.generateToken();
 
     const options = {
-      domain: "https://bitgram.vercel.app",
+      domain: ".vercel.app",
       sameSite: "None",
       secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
