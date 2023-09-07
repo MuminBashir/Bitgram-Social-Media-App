@@ -1,10 +1,20 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const app = express();
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config({ path: "config/config.env" });
 }
+
+//Setting cors for frontend
+app.use(
+  cors({
+    origin: [""],
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 // Using Middlewares
 app.use(express.json({ limit: "50mb" }));

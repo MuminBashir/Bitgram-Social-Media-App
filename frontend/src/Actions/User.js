@@ -1,4 +1,5 @@
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 export const loginUser = (email, password) => async (dispatch) => {
   try {
@@ -97,25 +98,27 @@ export const getPostOfFollowing = () => async (dispatch) => {
   }
 };
 
-export const getAllUsers = (name="") => async (dispatch) => {
-  try {
-    dispatch({
-      type: "allUsersRequest",
-    });
+export const getAllUsers =
+  (name = "") =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: "allUsersRequest",
+      });
 
-    const { data } = await axios.get(`/api/v1/users?name=${name}`);
+      const { data } = await axios.get(`/api/v1/users?name=${name}`);
 
-    dispatch({
-      type: "allUsersSuccess",
-      payload: data.users,
-    });
-  } catch (error) {
-    dispatch({
-      type: "allUsersFailure",
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({
+        type: "allUsersSuccess",
+        payload: data.users,
+      });
+    } catch (error) {
+      dispatch({
+        type: "allUsersFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 export const logoutUser = () => async (dispatch) => {
   try {
@@ -193,7 +196,7 @@ export const updatePassword =
     }
   };
 
-export const deleteProfile = (oldPassword, newPassword) => async (dispatch) => {
+export const deleteProfile = () => async (dispatch) => {
   try {
     dispatch({
       type: "DeleteProfileRequest",
