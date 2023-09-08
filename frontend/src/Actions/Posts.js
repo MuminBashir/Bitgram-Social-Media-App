@@ -1,6 +1,4 @@
 import axios from "axios";
-axios.defaults.withCredentials = true;
-const BASE_URL = "https://bitgram-api.vercel.app";
 
 export const likePost = (id) => async (dispatch) => {
   try {
@@ -8,7 +6,7 @@ export const likePost = (id) => async (dispatch) => {
       type: "likeRequest",
     });
 
-    const { data } = await axios.post(`${BASE_URL}/api/v1/post/${id}`);
+    const { data } = await axios.post(`/api/v1/post/${id}`);
 
     dispatch({
       type: "likeSuccess",
@@ -29,7 +27,7 @@ export const addComment = (id, comment) => async (dispatch) => {
     });
 
     const { data } = await axios.post(
-      `${BASE_URL}/api/v1/post/comment/${id}`,
+      `/api/v1/post/comment/${id}`,
       {
         comment,
       },
@@ -58,7 +56,7 @@ export const deleteComment = (id, commentId) => async (dispatch) => {
     });
 
     const { data } = await axios.delete(
-      `${BASE_URL}/api/v1/post/comment/${id}`,
+      `/api/v1/post/comment/${id}`,
       {
         data: { commentId: commentId },
       }
@@ -82,7 +80,7 @@ export const updateComment = (id, commentId, comment) => async (dispatch) => {
     });
 
     const { data } = await axios.put(
-      `${BASE_URL}/api/v1/post/comment/${id}`,
+      `/api/v1/post/comment/${id}`,
       {
         comment,
         commentId,
@@ -111,7 +109,7 @@ export const getMyPosts = () => async (dispatch) => {
       type: "myPostsRequest",
     });
 
-    const { data } = await axios.get(`${BASE_URL}/api/v1/my/posts`);
+    const { data } = await axios.get(`/api/v1/my/posts`);
 
     dispatch({
       type: "myPostsSuccess",
@@ -132,7 +130,7 @@ export const createNewPost = (caption, image) => async (dispatch) => {
     });
 
     const { data } = await axios.post(
-      `${BASE_URL}/api/v1/post/upload`,
+      `/api/v1/post/upload`,
       {
         caption,
         image,
@@ -163,7 +161,7 @@ export const updatePost = (caption, id) => async (dispatch) => {
     });
 
     const { data } = await axios.put(
-      `${BASE_URL}/api/v1/post/${id}`,
+      `/api/v1/post/${id}`,
       {
         caption,
       },
@@ -192,7 +190,7 @@ export const deletePost = (id) => async (dispatch) => {
       type: "deletePostRequest",
     });
 
-    const { data } = await axios.delete(`${BASE_URL}/api/v1/post/${id}`);
+    const { data } = await axios.delete(`/api/v1/post/${id}`);
 
     dispatch({
       type: "deletePostSuccess",
@@ -212,7 +210,7 @@ export const getUserPosts = (id) => async (dispatch) => {
       type: "userPostsRequest",
     });
 
-    const { data } = await axios.get(`${BASE_URL}/api/v1/userposts/${id}`);
+    const { data } = await axios.get(`/api/v1/userposts/${id}`);
 
     dispatch({
       type: "userPostsSuccess",

@@ -4,9 +4,6 @@ const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 
-const domain =
-  process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost";
-
 exports.register = async (req, res) => {
   try {
     const { name, email, password, avatar } = req.body;
@@ -31,10 +28,6 @@ exports.register = async (req, res) => {
     const token = await user.generateToken();
 
     const options = {
-      domain,
-      path: "/",
-      sameSite: "None",
-      secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       httpOnly: true,
     };
@@ -79,10 +72,6 @@ exports.login = async (req, res) => {
     const token = await user.generateToken();
 
     const options = {
-      domain,
-      path: "/",
-      sameSite: "None",
-      secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       httpOnly: true,
     };
@@ -106,10 +95,6 @@ exports.logout = async (req, res) => {
     res
       .status(200)
       .cookie("token", null, {
-        domain,
-        path: "/",
-        sameSite: "None",
-        secure: true,
         expires: new Date(Date.now()),
         httpOnly: true,
       })
