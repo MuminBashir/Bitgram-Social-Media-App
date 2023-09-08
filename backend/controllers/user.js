@@ -4,7 +4,8 @@ const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 
-const domain = process.env.NODE_ENV === 'production' ? '.vercel.app' : 'localhost';
+const domain =
+  process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost";
 
 exports.register = async (req, res) => {
   try {
@@ -31,6 +32,7 @@ exports.register = async (req, res) => {
 
     const options = {
       domain,
+      path: "/",
       sameSite: "None",
       secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -78,6 +80,7 @@ exports.login = async (req, res) => {
 
     const options = {
       domain,
+      path: "/",
       sameSite: "None",
       secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -102,7 +105,14 @@ exports.logout = async (req, res) => {
   try {
     res
       .status(200)
-      .cookie("token", null, { expires: new Date(Date.now()), httpOnly: true })
+      .cookie("token", null, {
+        domain,
+        path: "/",
+        sameSite: "None",
+        secure: true,
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      })
       .json({
         success: true,
         message: "Logged Out Successfully",

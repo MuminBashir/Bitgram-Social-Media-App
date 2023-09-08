@@ -100,7 +100,7 @@ const Account = () => {
               alt={user.name}
               sx={{ height: "8vmax", width: "8vmax" }}
             />
-            <Typography variant="h6">{user.name}</Typography>
+            <Typography variant="h6" textAlign={isSmallScreen?"center": ""}>{user.name}</Typography>
             <div>
               <button onClick={() => setFollowersToggle(!followersToggle)}>
                 <Typography>Followers</Typography>

@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../Actions/User";
 import { useAlert } from "react-alert";
-import Cookies from "js-cookie";
 
 import "./Login.css";
 
@@ -14,12 +13,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { message, error, loading, token } = useSelector((state) => state.user);
+  const { message, error, loading } = useSelector((state) => state.user);
 
   const loginHandler = async (e) => {
     e.preventDefault();
     await dispatch(loginUser(email, password));
-    Cookies.set("token", token, { expires: 30 });
   };
 
   useEffect(() => {
