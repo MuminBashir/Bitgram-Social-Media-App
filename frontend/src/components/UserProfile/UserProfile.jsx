@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading, Post, User } from "../";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { getMyPosts, getUserPosts } from "../../Actions/Posts";
-import { followUnfollowUser, getUserProfile, loadUser } from "../../Actions/User";
+import {
+  followUnfollowUser,
+  getUserProfile,
+  loadUser,
+} from "../../Actions/User";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const params = useParams();
+
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   const {
     user,
@@ -34,7 +41,7 @@ const UserProfile = () => {
     setFollowing(!following);
     await dispatch(followUnfollowUser(params.id));
     dispatch(getUserProfile(params.id));
-    dispatch(loadUser())
+    dispatch(loadUser());
   };
 
   useEffect(() => {
@@ -114,7 +121,9 @@ const UserProfile = () => {
               alt={user.name}
               sx={{ height: "8vmax", width: "8vmax" }}
             />
-            <Typography variant="h6">{user.name}</Typography>
+            <Typography variant="h6" textAlign={isSmallScreen ? "center" : ""}>
+              {user.name}
+            </Typography>
             <div>
               <button onClick={() => setFollowersToggle(!followersToggle)}>
                 <Typography>Followers</Typography>
