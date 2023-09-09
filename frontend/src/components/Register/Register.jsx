@@ -13,6 +13,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -34,7 +35,7 @@ const Register = () => {
 
   const registerHandler = (e) => {
     e.preventDefault();
-    dispatch(registerUser(avatar, name, email, password));
+    dispatch(registerUser(avatar, name, email, password, confirmPassword));
   };
 
   useEffect(() => {
@@ -85,6 +86,15 @@ const Register = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          className="registerInputs"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
 

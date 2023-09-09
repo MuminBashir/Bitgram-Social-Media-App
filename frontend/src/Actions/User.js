@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const loginUser = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -30,7 +29,7 @@ export const loginUser = (email, password) => async (dispatch) => {
 };
 
 export const registerUser =
-  (avatar, name, email, password) => async (dispatch) => {
+  (avatar, name, email, password, confirmPassword) => async (dispatch) => {
     try {
       dispatch({
         type: "RegisterRequest",
@@ -38,7 +37,7 @@ export const registerUser =
 
       const { data } = await axios.post(
         `/api/v1/register`,
-        { avatar, name, email, password },
+        { avatar, name, email, password, confirmPassword },
         {
           headers: {
             "Content-Type": "application/json",
@@ -168,7 +167,7 @@ export const updateProfile = (avatar, name, email) => async (dispatch) => {
 };
 
 export const updatePassword =
-  (oldPassword, newPassword) => async (dispatch) => {
+  (oldPassword, newPassword, confirmNewPassowrd) => async (dispatch) => {
     try {
       dispatch({
         type: "UpdatePasswordRequest",
@@ -176,7 +175,7 @@ export const updatePassword =
 
       const { data } = await axios.put(
         `/api/v1/update/password`,
-        { oldPassword, newPassword },
+        { oldPassword, newPassword, confirmNewPassowrd },
         {
           headers: {
             "Content-Type": "application/json",

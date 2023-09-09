@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading, Post, User } from "../";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
+import { Verified } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -124,6 +125,20 @@ const UserProfile = () => {
             <Typography variant="h6" textAlign={isSmallScreen ? "center" : ""}>
               {user.name}
             </Typography>
+            <div>
+              {user.email === "moominbashir732@gmail.com" ? (
+                <Button variant="contained" style={{ backgroundColor: "blue" }}>
+                  <Verified backgroundColor="white" />{" "}
+                  <a
+                    href="https://github.com/MuminBashir"
+                    target="__blank"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    Creator
+                  </a>
+                </Button>
+              ) : null}
+            </div>
             <div>
               <button onClick={() => setFollowersToggle(!followersToggle)}>
                 <Typography>Followers</Typography>

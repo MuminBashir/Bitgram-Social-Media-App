@@ -8,6 +8,7 @@ import { useAlert } from "react-alert";
 const UpdatePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const dispatch = useDispatch();
   const alert = useAlert();
 
@@ -15,7 +16,7 @@ const UpdatePassword = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updatePassword(oldPassword, newPassword));
+    dispatch(updatePassword(oldPassword, newPassword, confirmNewPassword));
   };
 
   useEffect(() => {
@@ -53,6 +54,15 @@ const UpdatePassword = () => {
           placeholder="New Password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          className="updatePasswordInputs"
+          placeholder="Confirm New Password"
+          value={confirmNewPassword}
+          onChange={(e) => setConfirmNewPassword(e.target.value)}
           required
         />
 

@@ -6,13 +6,20 @@ const cloudinary = require("cloudinary");
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, avatar } = req.body;
+    const { name, email, password, avatar, confirmPassword } = req.body;
 
     let user = await User.findOne({ email });
     if (user) {
       return res
         .status(400)
         .json({ success: false, message: "Email already exists" });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Password and Confirm Password don't match",
+      });
     }
 
     const myCloud = await cloudinary.v2.uploader.upload(avatar, {
@@ -162,7 +169,7 @@ exports.updatePassword = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("+password");
 
-    const { oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword, confirmNewPassowrd } = req.body;
 
     if (!oldPassword || !newPassword) {
       return res.status(400).json({
@@ -177,6 +184,13 @@ exports.updatePassword = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Incorrect Old password",
+      });
+    }
+
+    if (newPassword !== confirmNewPassowrd) {
+      return res.status(400).json({
+        success: false,
+        message: "New Password and Confirm New Password don't match",
       });
     }
 

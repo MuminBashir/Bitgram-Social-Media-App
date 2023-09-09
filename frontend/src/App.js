@@ -50,7 +50,12 @@ function App() {
   }, [dispatch]);
 
   let lastPath = localStorage.getItem("lastPath");
-  if (lastPath === "/login") {
+  if (
+    lastPath === "/login" ||
+    lastPath === "/register" ||
+    lastPath === "/forgot/password" ||
+    lastPath.includes("/password/reset")
+  ) {
     lastPath = "/";
   }
   const redirectToPath = lastPath || "/";
