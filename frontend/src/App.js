@@ -53,8 +53,7 @@ function App() {
   if (
     lastPath === "/login" ||
     lastPath === "/register" ||
-    lastPath === "/forgot/password" ||
-    lastPath.includes("/password/reset")
+    lastPath === "/forgot/password"
   ) {
     lastPath = "/";
   }
