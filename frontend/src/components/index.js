@@ -14,4 +14,6 @@ export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
 export { default as ResetPassword } from "./ResetPassword/ResetPassword";
 export { default as UserProfile } from "./UserProfile/UserProfile";
 export { default as Search } from "./Search/Search";
+export { default as Notifications } from "./Notifications/Notifications";
+export { default as NotificationCard } from "./NotificationCard/NotificationCard";
 export { default as NotFound } from "./NotFound/NotFound";

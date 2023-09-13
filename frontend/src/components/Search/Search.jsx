@@ -38,16 +38,24 @@ const Search = () => {
 
         <div className="searchResults">
           {users && users.length > 0 ? (
-            users.map((user) => (
-              <User
-                key={user._id}
-                userId={user._id}
-                name={user.name}
-                avatar={user.avatar.url}
-              />
-            ))
+            users.map((user, index) => {
+              if (index < 6) {
+                return (
+                  <User
+                    key={user._id}
+                    userId={user._id}
+                    name={user.name}
+                    avatar={user.avatar.url}
+                  />
+                );
+              } else {
+                return null;
+              }
+            })
           ) : (
-            <Typography color="rgba(0,0,0,0.55)" textAlign="center">No user found</Typography>
+            <Typography color="rgba(0,0,0,0.55)" textAlign="center">
+              No user found
+            </Typography>
           )}
         </div>
       </form>

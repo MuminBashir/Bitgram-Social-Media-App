@@ -16,6 +16,7 @@ import {
   Login,
   NewPost,
   NotFound,
+  Notifications,
   Register,
   ResetPassword,
   Search,
@@ -127,6 +128,13 @@ function App() {
         <Route
           path="/search"
           element={isAuthenticated ? <Search /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            isAuthenticated ? <Notifications /> : <Navigate to="/login" />
+          }
         />
 
         <Route path="*" element={<NotFound />} />

@@ -48,6 +48,30 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
+  notifications: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      notification: {
+        type: String,
+        required: true,
+      },
+      post: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+      comment: {
+        type: String,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+
   resetPasswordToken: String,
 
   resetPasswordExpire: Date,

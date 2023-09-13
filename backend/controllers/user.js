@@ -138,6 +138,17 @@ exports.followUser = async (req, res) => {
       const index2 = userToFollow.followers.indexOf(loggedUser._id);
       userToFollow.followers.splice(index2, 1);
 
+      for (let i = 0; i < userToFollow.notifications.length; i++) {
+        if (
+          userToFollow.notifications[i].notification ===
+            `${loggedUser.name} has started following you.` &&
+          userToFollow.notifications[i].user.toString() ===
+            loggedUser._id.toString()
+        ) {
+          userToFollow.notifications.splice(i, 1);
+        }
+      }
+
       await loggedUser.save();
       await userToFollow.save();
 
@@ -148,6 +159,15 @@ exports.followUser = async (req, res) => {
     } else {
       loggedUser.following.push(userToFollow._id);
       userToFollow.followers.push(loggedUser._id);
+
+      if (userToFollow.notifications.length === 20) {
+        userToFollow.notifications.pop();
+      }
+
+      userToFollow.notifications.unshift({
+        user: loggedUser._id,
+        notification: `${loggedUser.name} has started following you.`,
+      });
 
       await loggedUser.save();
       await userToFollow.save();
@@ -331,7 +351,7 @@ exports.deleteUser = async (req, res) => {
 exports.myProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate(
-      "posts followers following"
+      "posts followers following notifications.user notifications.post"
     );
 
     res.status(200).json({

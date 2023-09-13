@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../Actions/User";
+import { loadUser, loginUser } from "../../Actions/User";
 import { useAlert } from "react-alert";
 
 import "./Login.css";
@@ -18,6 +18,7 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
     await dispatch(loginUser(email, password));
+    dispatch(loadUser())
   };
 
   useEffect(() => {

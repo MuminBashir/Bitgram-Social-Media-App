@@ -1,0 +1,58 @@
+.notificationBox {
+    display: flex;
+    width: 95%;
+    flex-direction: column;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.507);
+    border: 1px solid rgba(9, 1, 17, 0.107);
+    border-radius: 20px;
+    margin: 1vmax 0;
+    font: 100 1.5vmax "Roboto", sans-serif;
+    padding: 0.6vmax 2vmax;
+}
+
+.mainNotificationBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.postImage {
+    height: 4vmax;
+    width: 8vmax;
+    margin-left: 2.5vmax;
+    border-radius: 10px;
+
+    /* border: 3px solid rgb(255, 201, 201);  */
+}
+
+.notificationUser {
+    display: flex;
+    align-items: center;
+}
+
+.notificationUser img {
+    height: 3vmax;
+    width: 3vmax;
+    margin: 0.4vmax;
+    border-radius: 100%;
+    border: 3px solid rgb(255, 201, 201);
+    transition: all 0.5s;
+}
+
+.notificationUser img:hover {
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 600px) {
+    .notificationUser img {
+        height: 8vw;
+        width: 8vw;
+        margin: 4vw;
+    }
+
+    .postImage {
+        height: 10vw;
+        width: 20vw;
+    }
+}

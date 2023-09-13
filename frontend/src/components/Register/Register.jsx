@@ -3,7 +3,7 @@ import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { registerUser } from "../../Actions/User";
+import { loadUser, registerUser } from "../../Actions/User";
 import { useAlert } from "react-alert";
 
 const Register = () => {
@@ -36,6 +36,7 @@ const Register = () => {
   const registerHandler = (e) => {
     e.preventDefault();
     dispatch(registerUser(avatar, name, email, password, confirmPassword));
+    dispatch(loadUser());
   };
 
   useEffect(() => {

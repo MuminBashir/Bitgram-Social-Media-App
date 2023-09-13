@@ -107,6 +107,8 @@ exports.updateCaption = async (req, res) => {
 exports.likeandUnlikePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    const otherUser = await User.findById(post.owner);
+    const loggedUser = await User.findById(req.user._id);
 
     if (!post) {
       return res.status(404).json({
@@ -120,6 +122,18 @@ exports.likeandUnlikePost = async (req, res) => {
       post.likes.splice(index, 1);
       await post.save();
 
+      for (let i = 0; i < otherUser.notifications.length; i++) {
+        if (
+          otherUser.notifications[i].notification ===
+            `${loggedUser.name} has liked your post` &&
+          otherUser.notifications[i].post.toString() === post._id.toString()
+        ) {
+          otherUser.notifications.splice(i, 1);
+        }
+      }
+
+      await otherUser.save();
+
       return res.status(200).json({
         success: true,
         message: "Post Unliked",
@@ -127,6 +141,18 @@ exports.likeandUnlikePost = async (req, res) => {
     } else {
       post.likes.push(req.user._id);
       await post.save();
+
+      if (otherUser.notifications.length === 20) {
+        otherUser.notifications.pop();
+      }
+
+      otherUser.notifications.unshift({
+        user: loggedUser._id,
+        notification: `${loggedUser.name} has liked your post`,
+        post: post._id,
+      });
+
+      await otherUser.save();
 
       return res.status(200).json({
         success: true,
@@ -211,7 +237,9 @@ exports.getUserPosts = async (req, res) => {
 
 exports.addComment = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    let post = await Post.findById(req.params.id);
+    const otherUser = await User.findById(post.owner);
+    const loggedUser = await User.findById(req.user._id);
 
     if (!post) {
       return res.status(404).json({
@@ -234,6 +262,18 @@ exports.addComment = async (req, res) => {
 
     await post.save();
 
+    post = await Post.findById(req.params.id);
+    const lastComment = post.comments[0]._id.toString();
+
+    otherUser.notifications.unshift({
+      user: loggedUser._id,
+      notification: `${loggedUser.name} has commented on your post *${req.body.comment}*`,
+      post: post._id,
+      comment: lastComment,
+    });
+
+    await otherUser.save();
+
     res.status(200).json({
       success: true,
       message: "Comment added successfully",
@@ -249,6 +289,7 @@ exports.addComment = async (req, res) => {
 exports.deleteComment = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    const otherUser = await User.findById(post.owner);
 
     if (!post) {
       return res.status(404).json({
@@ -267,10 +308,16 @@ exports.deleteComment = async (req, res) => {
     if (post.owner.toString() === req.user._id.toString()) {
       post.comments.forEach((item, index) => {
         if (item._id.toString() === req.body.commentId.toString()) {
+          for (let i = 0; i < otherUser.notifications.length; i++) {
+            if (otherUser.notifications[i].comment === req.body.commentId) {
+              otherUser.notifications.splice(i, 1);
+            }
+          }
           return post.comments.splice(index, 1);
         }
       });
 
+      await otherUser.save();
       await post.save();
 
       return res.status(200).json({
@@ -284,12 +331,18 @@ exports.deleteComment = async (req, res) => {
           item.user.toString() === req.user._id.toString() &&
           item._id.toString() === req.body.commentId
         ) {
+          for (let i = 0; i < otherUser.notifications.length; i++) {
+            if (otherUser.notifications[i].comment === req.body.commentId) {
+              otherUser.notifications.splice(i, 1);
+            }
+          }
           commentFound = true;
           return post.comments.splice(index, 1);
         }
       });
 
       if (commentFound) {
+        await otherUser.save();
         await post.save();
         return res.status(200).json({
           success: true,
@@ -314,6 +367,8 @@ exports.deleteComment = async (req, res) => {
 exports.updateComment = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    const otherUser = await User.findById(post.owner);
+    const loggedUser = await User.findById(req.user._id);
 
     if (!post) {
       return res.status(404).json({
@@ -340,6 +395,13 @@ exports.updateComment = async (req, res) => {
 
     post.comments.forEach(async (item) => {
       if (item._id.toString() === req.body.commentId) {
+        for (let i = 0; i < otherUser.notifications.length; i++) {
+          if (otherUser.notifications[i].comment === req.body.commentId) {
+            otherUser.notifications[
+              i
+            ].notification = `${loggedUser.name} has commented on your post *${req.body.comment}*`;
+          }
+        }
         commentFound = true;
         item.comment = req.body.comment;
       }
@@ -347,6 +409,7 @@ exports.updateComment = async (req, res) => {
 
     if (commentFound) {
       await post.save();
+      await otherUser.save();
 
       return res.status(200).json({
         success: true,
